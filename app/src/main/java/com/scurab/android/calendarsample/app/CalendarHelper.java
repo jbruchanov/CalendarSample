@@ -64,12 +64,13 @@ public class CalendarHelper {
             long id;
             // Get the field values
             id = cur.getLong(cur.getColumnIndex(CALENDARS_PROJECTION[0]));
-            String displayName = cur.getString(cur.getColumnIndex(CALENDARS_PROJECTION[1]));
-            String accountName = cur.getString(cur.getColumnIndex(CALENDARS_PROJECTION[2]));
+            String accountName = cur.getString(cur.getColumnIndex(CALENDARS_PROJECTION[1]));
+            String displayName = cur.getString(cur.getColumnIndex(CALENDARS_PROJECTION[2]));
             String ownerName = cur.getString(cur.getColumnIndex(CALENDARS_PROJECTION[3]));
 
             calendars.add(new Calendar(id, displayName, accountName, ownerName));
         }
+        cur.close();
         return calendars;
     }
 
@@ -112,10 +113,17 @@ public class CalendarHelper {
 
             result.add(new CalendarEvent(id, title, organizer, description, startD, endD));
         }
+        cur.close();
 
         return result;
     }
 
+    /**
+     * Add new calendar Event
+     * @param calendar
+     * @param event
+     * @return
+     */
     public long addCalendarEvent(Calendar calendar, CalendarEvent event){
         ContentResolver cr = mContext.getContentResolver();
 
@@ -134,6 +142,11 @@ public class CalendarHelper {
         return eventID;
     }
 
+    /**
+     * Delete specific Calendar Event
+     * @param calendarEvent
+     * @return
+     */
     public boolean deleteEvent(CalendarEvent calendarEvent) {
         ContentResolver cr = mContext.getContentResolver();
         ContentValues values = new ContentValues();
