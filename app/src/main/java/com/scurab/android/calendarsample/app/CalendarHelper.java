@@ -129,8 +129,8 @@ public class CalendarHelper {
         values.put(Events.CALENDAR_ID, calendar.id);
         values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
         Uri uri = cr.insert(Events.CONTENT_URI, values);
-
         long eventID = Long.parseLong(uri.getLastPathSegment());
+        cr.notifyChange(uri, null, true);//sync data to server side
         return eventID;
     }
 
@@ -139,6 +139,7 @@ public class CalendarHelper {
         ContentValues values = new ContentValues();
         Uri deleteUri = ContentUris.withAppendedId(Events.CONTENT_URI, calendarEvent.id);
         int rows = cr.delete(deleteUri, null, null);
+        cr.notifyChange(deleteUri, null, true);//sync data to server side
         return rows == 1;
     }
 
